@@ -1,4 +1,4 @@
-(defproject run.avelino/logseq-libs "0.1.1-0.0.14"
+(defproject run.avelino/logseq-libs "0.1.2-0.0.14"
   :url "https://github.com/avelino/logseq-libs"
   :description "@logseq/libs wrapper for cljs"
   :license {:name "MIT"
@@ -7,7 +7,9 @@
 
   :dependencies [[org.clojure/clojurescript "1.11.60"]]
 
-  :npm-deps {"@logseq/libs" "0.0.14"}
+  :npm-deps {"@logseq/libs" "0.0.14"
+             :shadow-cljs "2.23.3"}
+  :install-deps true
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-codox "0.10.7"]]
