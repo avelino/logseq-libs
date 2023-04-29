@@ -1,4 +1,4 @@
-(ns logseq-libs/editor
+(ns logseq-libs.editor
   (:require ["@logseq/libs"]))
 
 (def get-current-block js/logseq.Editor.getCurrentBlock)

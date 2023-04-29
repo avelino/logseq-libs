@@ -1,2 +1,2 @@
-(ns logseq-libs/ui
+(ns logseq-libs.ui
   (:require ["@logseq/libs"]))

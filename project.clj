@@ -1,4 +1,4 @@
-(defproject run.avelino/logseq-libs "0.1-0.0.14"
+(defproject run.avelino/logseq-libs "0.1.1-0.0.14"
   :url "https://github.com/avelino/logseq-libs"
   :description "@logseq/libs wrapper for cljs"
   :license {:name "MIT"
