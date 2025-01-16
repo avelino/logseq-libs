@@ -1,6 +1,6 @@
-# @logseq/libs
+# run.avelino/logseq-libs
 
-`@logseq/libs` wrapper for ClojureScript, making it friendly to work with Logseq Plugin API in ClojureScript.
+`[@logseq/libs](https://logseq.github.io/plugins/)` **wrapper** for *ClojureScript*, making it friendly to work with Logseq Plugin API in ClojureScript.
 
 ## Status
 
@@ -109,7 +109,7 @@ That's it! The `@logseq/libs` npm package is included as a dependency and will b
   (:require [run.avelino.logseq-libs.core :as ls]
             [run.avelino.logseq-libs.ui :as ls-ui]))
 
-(ls/ready! 
+(ls/ready!
   (fn []
     (ls-ui/show-msg! "Plugin ready!")))
 ```
