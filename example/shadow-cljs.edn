@@ -1,0 +1,7 @@
+{:source-paths ["src" "../src"]
+ :dependencies [[applied-science/js-interop "0.4.2"]]
+ :builds
+ {:app {:target :browser
+        :output-dir "dist"
+        :asset-path "."
+        :modules {:main {:init-fn logseq-example.core/init}}}}} 

@@ -1,0 +1,32 @@
+{
+  "name": "@run.avelino/logseq-libs",
+  "version": "0.0.17",
+  "description": "ClojureScript wrapper for @logseq/libs",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@logseq/libs": "0.0.17"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.25.2",
+    "jsdom": "^22.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avelino/logseq-libs.git"
+  },
+  "keywords": [
+    "logseq",
+    "clojurescript",
+    "plugin",
+    "@logseq/libs"
+  ],
+  "author": "Avelino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/avelino/logseq-libs/issues"
+  },
+  "homepage": "https://github.com/avelino/logseq-libs#readme"
+}

@@ -1,0 +1,13 @@
+{:paths ["src" "test"]
+ :deps {org.clojure/clojurescript {:mvn/version "1.11.60"}
+        thheller/shadow-cljs {:mvn/version "2.25.2"}
+        applied-science/js-interop {:mvn/version "0.3.3"}}
+
+ :npm-deps {"@logseq/libs" "0.0.17"}
+        
+ :aliases
+ {:dev
+  {:extra-paths ["example"]}
+  
+  :test
+  {:extra-paths ["test"]}}} 

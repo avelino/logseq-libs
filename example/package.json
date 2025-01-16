@@ -1,0 +1,11 @@
+{
+  "name": "logseq-example",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@logseq/libs": "0.0.17"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^2.26.2"
+  }
+} 

@@ -1,0 +1,29 @@
+{:paths ["src" "test"]
+ :deps {org.babashka/cli {:mvn/version "0.7.53"}}
+ :tasks
+ {:requires ([babashka.cli :as cli])
+  :init (do
+          (defn run [cmd]
+            (let [result (shell cmd)]
+              (when-not (zero? (:exit result))
+                (throw (ex-info "Command failed" result))))))
+
+  clean {:doc "Clean compiled files"
+         :task (do
+                 (run "rm -rf dist")
+                 (run "rm -rf .shadow-cljs")
+                 (run "rm -rf node_modules")
+                 (run "rm -rf out"))}
+
+  install {:doc "Install dependencies"
+          :task (run "npm install")}
+
+  release {:doc "Build release version"
+           :depends [clean install]
+           :task (run "npx shadow-cljs release lib")}
+
+  watch {:doc "Watch for changes and rebuild"
+         :depends [clean install]
+         :task (run "npx shadow-cljs watch lib")}
+
+  default {:depends [watch]}}} 

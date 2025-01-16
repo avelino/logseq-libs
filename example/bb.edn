@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :tasks
+ {watch {:task (shell "npx shadow-cljs watch app")}
+  release {:task (shell "npx shadow-cljs release app")}}} 

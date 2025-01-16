@@ -1,0 +1,16 @@
+{:source-paths ["src" "test"]
+ :deps true
+ :dependencies [[org.clojure/clojurescript "1.11.60"]
+                [applied-science/js-interop "0.4.2"]]
+ :builds
+ {:lib
+  {:target :npm-module
+   :output-dir "dist"
+   :entries [run.avelino.logseq-libs.core
+             run.avelino.logseq-libs.ui]
+   :exports-var run.avelino.logseq-libs.core/exports}
+  
+  :test
+  {:target :node-test
+   :output-to "out/node-tests.js"
+   :main avelino.logseq-libs.test-runner/main}}} 
