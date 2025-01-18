@@ -11,11 +11,13 @@
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
 (def jar-file (format "target/%s-%s.jar" (name lib) version))
+(def pom-file (format "target/classes/META-INF/maven/%s/pom.xml" lib))
 
 (defn clean [_]
   (b/delete {:path "target"}))
 
 (defn jar [_]
+  (b/create-dirs {:path class-dir})
   (b/write-pom {:class-dir class-dir
                 :lib lib
                 :version version
@@ -34,6 +36,7 @@
           :jar-file jar-file}))
 
 (defn deploy [_]
+  (jar nil)  ; ensure jar is built with fresh POM
   (dd/deploy {:installer :remote
               :artifact jar-file
-              :pom-file (b/pom-path {:lib lib :class-dir class-dir})}))
+              :pom-file pom-file}))
