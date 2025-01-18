@@ -1,5 +1,6 @@
 {:paths ["src" "test"]
- :deps {org.babashka/cli {:mvn/version "0.7.53"}}
+ :deps {org.babashka/cli {:mvn/version "0.7.53"}
+        slipset/deps-deploy {:mvn/version "0.2.1"}}
  :tasks
  {:requires ([babashka.cli :as cli])
   :init (do
@@ -16,14 +17,20 @@
                  (run "rm -rf out"))}
 
   install {:doc "Install dependencies"
-          :task (run "npm install")}
+           :task (run "npm install")}
 
-  release {:doc "Build release version"
-           :depends [clean install]
+  build-jar {:doc "Build jar file"
+             :task (shell "clojure -T:build jar")}
+
+  deploy {:doc "Deploy jar to Clojars"
+          :task (shell "clojure -T:build deploy")}
+
+  release {:doc "Build release version and deploy to Clojars"
+           :depends [clean install build-jar deploy]
            :task (run "npx shadow-cljs release lib")}
 
   watch {:doc "Watch for changes and rebuild"
          :depends [clean install]
          :task (run "npx shadow-cljs watch lib")}
 
-  default {:depends [watch]}}} 
+  default {:depends [watch]}}}
