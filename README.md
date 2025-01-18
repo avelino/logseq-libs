@@ -2,6 +2,8 @@
 
 [`@logseq/libs`](https://logseq.github.io/plugins/) **wrapper** for *ClojureScript*, making it friendly to work with Logseq Plugin API in ClojureScript.
 
+[![Clojars Project](https://img.shields.io/clojars/v/run.avelino/logseq-libs.svg)](https://clojars.org/run.avelino/logseq-libs)
+
 ## Status
 
 ✅ All core modules have been implemented:
