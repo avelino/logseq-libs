@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: env
+
     steps:
       - uses: actions/checkout@v4
 
@@ -22,6 +23,13 @@ jobs:
         uses: DeLaGuardo/setup-clojure@12.3
         with:
           bb: latest
+          cli: latest
+          clj-kondo: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Deploy to Clojars
         env:
