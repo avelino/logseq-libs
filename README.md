@@ -1,6 +1,6 @@
 # run.avelino/logseq-libs
 
-`[@logseq/libs](https://logseq.github.io/plugins/)` **wrapper** for *ClojureScript*, making it friendly to work with Logseq Plugin API in ClojureScript.
+[`@logseq/libs`](https://logseq.github.io/plugins/) **wrapper** for *ClojureScript*, making it friendly to work with Logseq Plugin API in ClojureScript.
 
 ## Status
 
