@@ -20,7 +20,14 @@
                 :lib lib
                 :version version
                 :basis basis
-                :src-dirs ["src"]})
+                :src-dirs ["src"]
+                :scm {:url "https://github.com/avelino/logseq-libs"
+                      :connection "scm:git:git://github.com/avelino/logseq-libs.git"
+                      :developerConnection "scm:git:ssh://git@github.com/avelino/logseq-libs.git"
+                      :tag version}
+                :licenses [{:name "MIT"
+                            :url "https://github.com/avelino/logseq-libs/blob/main/LICENSE"}]
+                :description "ClojureScript wrapper for @logseq/libs"})
   (b/copy-dir {:src-dirs ["src" "resources"]
                :target-dir class-dir})
   (b/jar {:class-dir class-dir
