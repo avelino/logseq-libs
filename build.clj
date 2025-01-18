@@ -9,34 +9,43 @@
       (json/read-str :key-fn keyword)
       :version))
 (def class-dir "target/classes")
-(def basis (b/create-basis {:project "deps.edn"}))
+(def basis (delay (b/create-basis {:project "deps.edn"})))
 (def jar-file (format "target/%s-%s.jar" (name lib) version))
-(def pom-file (format "target/classes/META-INF/maven/%s/pom.xml" lib))
+
+(def pom-template
+  [[:description "ClojureScript wrapper for @logseq/libs"]
+   [:url "https://github.com/avelino/logseq-libs"]
+   [:licenses
+    [:license
+     [:name "MIT License"]
+     [:url "https://opensource.org/licenses/MIT"]]]
+   [:scm
+    [:url "https://github.com/avelino/logseq-libs"]
+    [:connection "scm:git:https://github.com/avelino/logseq-libs.git"]
+    [:developerConnection "scm:git:ssh:git@github.com:avelino/logseq-libs.git"]
+    [:tag (str "v" version)]]])
+
+(def options
+  {:class-dir class-dir
+   :lib lib
+   :version version
+   :basis @basis
+   :jar-file jar-file
+   :src-dirs ["src"]
+   :pom-data pom-template})
 
 (defn clean [_]
   (b/delete {:path "target"}))
 
 (defn jar [_]
-  (b/create-dirs {:path class-dir})
-  (b/write-pom {:class-dir class-dir
-                :lib lib
-                :version version
-                :basis basis
-                :src-dirs ["src"]
-                :scm {:url "https://github.com/avelino/logseq-libs"
-                      :connection "scm:git:git://github.com/avelino/logseq-libs.git"
-                      :developerConnection "scm:git:ssh://git@github.com/avelino/logseq-libs.git"
-                      :tag version}
-                :licenses [{:name "MIT"
-                            :url "https://github.com/avelino/logseq-libs/blob/main/LICENSE"}]
-                :description "ClojureScript wrapper for @logseq/libs"})
-  (b/copy-dir {:src-dirs ["src" "resources"]
+  (clean nil)
+  (b/write-pom options)
+  (b/copy-dir {:src-dirs (:paths @basis)
                :target-dir class-dir})
-  (b/jar {:class-dir class-dir
-          :jar-file jar-file}))
+  (b/jar options))
 
 (defn deploy [_]
-  (jar nil)  ; ensure jar is built with fresh POM
+  (jar nil)
   (dd/deploy {:installer :remote
               :artifact jar-file
-              :pom-file pom-file}))
+              :pom-file (b/pom-path {:lib lib :class-dir class-dir})}))
