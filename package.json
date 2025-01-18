@@ -1,6 +1,6 @@
 {
   "name": "@run.avelino/logseq-libs",
-  "version": "0.0.17",
+  "version": "0.0.17.1",
   "description": "ClojureScript wrapper for @logseq/libs",
   "main": "dist/index.js",
   "files": [
