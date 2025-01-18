@@ -99,10 +99,12 @@ Want to help? Check the [Contributing](#contributing) section!
 
 ## Installation
 
+[![Clojars Project](https://img.shields.io/clojars/v/run.avelino/logseq-libs.svg)](https://clojars.org/run.avelino/logseq-libs)
+
 Add to your `deps.edn`:
 
 ```clojure
-{:deps {run.avelino/logseq-libs {:mvn/version "0.1.0"}}}
+{:deps {run.avelino/logseq-libs {:mvn/version "0.0.17.1"}}}
 ```
 
 That's it! The `@logseq/libs` npm package is included as a dependency and will be installed automatically.
