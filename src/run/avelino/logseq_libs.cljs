@@ -1,27 +1,31 @@
 (ns run.avelino.logseq-libs
   "Core namespace for Logseq plugin API wrapper"
-  (:require ["@logseq/libs" :as ls]
-            [applied-science.js-interop :as j]))
+  (:require ["@logseq/libs" :refer [LSPluginCore] :as LSPlugin]
+            [run.avelino.logseq-libs.core :as core]))
 
-;; Core API functions
-(defn ready!
-  "Initialize plugin and register model"
-  ([callback]
-   (-> ls/logseq
-       (j/call :ready callback)))
-  ([model callback]
-   (-> ls/logseq 
-       (j/call :ready model callback))))
+(def logseq js/logseq)
+
+;; Re-export core functions
+(def ready! core/ready!)
+(def provide-model! core/provide-model!)
+(def provide-style! core/provide-style!)
+(def provide-ui! core/provide-ui!)
+(def update-settings! core/update-settings!)
+(def on-settings-changed! core/on-settings-changed!)
+(def before-unload! core/before-unload!)
+(def use-settings-schema! core/use-settings-schema!)
+(def get-user-configs! core/get-user-configs!)
+(def register-command-palette! core/register-command-palette!)
 
 ;; Editor namespace
 (defn register-slash-command!
   "Register a new slash command"
   [name callback]
-  (-> ls/logseq
-      (j/get :Editor)
-      (j/call :registerSlashCommand name callback)))
+  (-> logseq
+      .-Editor
+      (.registerSlashCommand name callback)))
 
-;; UI namespace  
+;; UI namespace
 (defn show-msg!
   "Show a notification message"
   ([content]
@@ -29,6 +33,6 @@
   ([content status]
    (show-msg! content status nil))
   ([content status opts]
-   (-> ls/logseq
-       (j/get :UI)
-       (j/call :showMsg content status (clj->js opts))))) 
+   (-> logseq
+       .-UI
+       (.showMsg content status (clj->js opts)))))

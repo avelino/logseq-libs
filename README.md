@@ -15,6 +15,9 @@
 - `update-settings!`: Update plugin settings
 - `on-settings-changed!`: Register settings change handler
 - `before-unload!`: Register before unload handler
+- `use-settings-schema!`: Define the settings schema for the plugin, allowing users to configure plugin settings through the Logseq UI
+- `get-user-configs!`: Get Logseq user configurations (language, date format, workflow, theme, etc.)
+- `register-command-palette!`: Register commands in the Logseq command palette with optional keyboard shortcuts
 
 ### UI API
 
