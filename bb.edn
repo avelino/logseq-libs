@@ -19,6 +19,11 @@
   install {:doc "Install dependencies"
            :task (run "npm install")}
 
+  test {:doc "Run tests"
+        :task (do
+                (run "npx shadow-cljs compile test")
+                (run "node out/node-tests.js"))}
+
   build-jar {:doc "Build jar file"
              :task (shell "clojure -T:build jar")}
 
