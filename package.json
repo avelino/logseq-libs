@@ -11,7 +11,8 @@
   },
   "devDependencies": {
     "shadow-cljs": "^2.25.2",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "nyc": "^15.1.0"
   },
   "files": [
     "dist"
