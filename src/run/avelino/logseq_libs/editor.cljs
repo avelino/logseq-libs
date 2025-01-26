@@ -18,14 +18,16 @@
   ([block-id content opts]
    (-> ls/logseq
        (j/get :Editor)
-       (j/call :insertBlock block-id content (clj->js opts)))))
+       (j/call :insertBlock block-id content (clj->js opts))
+       (.then #(js->clj % :keywordize-keys true)))))
 
 (defn update-block!
   "Update block content"
   [block-id content]
   (-> ls/logseq
       (j/get :Editor)
-      (j/call :updateBlock block-id content)))
+      (j/call :updateBlock block-id content)
+      (.then #(js->clj % :keywordize-keys true))))
 
 (defn get-block!
   "Get block by UUID or reference"
@@ -187,4 +189,4 @@
   [callback]
   (-> ls/logseq
       (j/get :Editor)
-      (j/call :onInputSelectionEnd callback))) 
+      (j/call :onInputSelectionEnd callback)))

@@ -123,17 +123,26 @@
     (set! (.-removeBlock editor-obj)
           (fn [block-id]
             (reset! last-call [block-id])
-            (swap! calls conj [:remove-block [block-id]])))
+            (swap! calls conj [:remove-block [block-id]])
+            (js/Promise.resolve #js {:ok true})))
 
     (set! (.-insertBlock editor-obj)
           (fn [block-id content opts]
             (reset! last-call [block-id content opts])
-            (swap! calls conj [:insert-block [block-id content opts]])))
+            (swap! calls conj [:insert-block [block-id content opts]])
+            (js/Promise.resolve #js {:uuid block-id :content content})))
 
     (set! (.-updateBlock editor-obj)
           (fn [block-id content]
             (reset! last-call [block-id content])
-            (swap! calls conj [:update-block [block-id content]])))
+            (swap! calls conj [:update-block [block-id content]])
+            (js/Promise.resolve #js {:uuid block-id :content content})))
+
+    (set! (.-getBlock editor-obj)
+          (fn [block-id]
+            (reset! last-call [block-id])
+            (swap! calls conj [:get-block [block-id]])
+            (js/Promise.resolve #js {:uuid block-id :content "test content"})))
 
     (set! (.-deletePage editor-obj)
           (fn [page-name]
