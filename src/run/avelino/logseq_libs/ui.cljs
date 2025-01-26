@@ -1,7 +1,12 @@
 (ns run.avelino.logseq-libs.ui
   "UI related functions for Logseq plugin API"
   (:require ["@logseq/libs" :as ls]
-            [applied-science.js-interop :as j]))
+            [applied-science.js-interop :as j])
+  (:require-macros [run.avelino.logseq-libs.macros :refer [deflogseq-api]]))
+
+;; Generate all UI API functions using the macro
+;; the imports [ls j] "will be" unused until the macro is executed
+(deflogseq-api :UI)
 
 (defn show-msg!
   "Show a notification message"
@@ -13,24 +18,3 @@
    (-> ls/logseq
        (j/get :UI)
        (j/call :showMsg content status (clj->js opts)))))
-
-(defn close-msg!
-  "Close a notification message"
-  [key]
-  (-> ls/logseq
-      (j/get :UI)
-      (j/call :closeMsg key)))
-
-(defn query-element-rect!
-  "Query element rectangle by selector"
-  [selector]
-  (-> ls/logseq
-      (j/get :UI)
-      (j/call :queryElementRect selector)))
-
-(defn check-slot-valid!
-  "Check if a UI slot is valid"
-  [slot]
-  (-> ls/logseq
-      (j/get :UI)
-      (j/call :checkSlotValid slot))) 
