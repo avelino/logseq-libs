@@ -1,8 +1,6 @@
 {:deps true
  :nrepl {:port 8777}
 
- :source-paths ["src" "test"]
-
  :js-options
  {:resolve {"@logseq/libs" {:target :file
                             :file "test/__mocks__/@logseq/libs.js"}}}
