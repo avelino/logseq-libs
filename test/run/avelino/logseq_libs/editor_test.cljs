@@ -135,6 +135,15 @@
       (editor/restore-editing-cursor!)
       (is (test-utils/was-called? test-plugin))))
 
+  (testing "get-editing-block-content!"
+    (async done
+           (let [mock-content "test block content"]
+             (with-redefs [ls/logseq #js {:Editor #js {:getEditingBlockContent (fn [] (js/Promise.resolve mock-content))}}]
+               (-> (editor/get-editing-block-content!)
+                   (.then (fn [result]
+                            (is (= "test block content" result))
+                            (done))))))))
+
   (testing "get-editing-cursor-position!"
     (async done
            (let [mock-position #js {:line 1 :ch 10}]

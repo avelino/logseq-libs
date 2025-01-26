@@ -101,6 +101,14 @@
       (j/get :Editor)
       (j/call :exitEditingMode)))
 
+(defn get-editing-block-content!
+  "Get the content of the block currently being edited"
+  []
+  (-> ls/logseq
+      (j/get :Editor)
+      (j/call :getEditingBlockContent)
+      (.then #(js->clj % :keywordize-keys true))))
+
 (defn restore-editing-cursor!
   "Restore editing cursor"
   []
