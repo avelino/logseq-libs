@@ -85,6 +85,12 @@ const logseq = {
     useSettingsSchema: () => { },
     Editor,
     UI,
+    DB: {
+        q: (dsl) => Promise.resolve([{ id: 1, content: "test" }]),
+        datascriptQuery: (...args) => Promise.resolve([{ id: 1, result: "test" }]),
+        onChanged: (callback) => callback,
+        onBlockChanged: (uuid, callback) => callback
+    },
     App: {
         registerCommandPalette: () => { },
         getUserConfigs: () => Promise.resolve({ preferredLanguage: 'en' })
