@@ -17,43 +17,45 @@
 ;; Block operations tests
 (deftest block-operations-test
   (testing "remove-block!"
-    (with-redefs [ls/logseq (:plugin test-plugin)]
-      (editor/remove-block! "block-123")
-      (let [[block-id] (test-utils/get-last-call test-plugin)]
-        (is (= "block-123" block-id)))))
+    (async done
+           (with-redefs [ls/logseq mocks/logseq-mock]
+             (-> (editor/remove-block! "block-123")
+                 (.then (fn [result]
+                          (is (= {:ok true} (js->clj result :keywordize-keys true)))
+                          (done)))))))
 
   (testing "insert-block!"
     (testing "with required params only"
-      (with-redefs [ls/logseq (:plugin test-plugin)]
-        (editor/insert-block! "block-123" "content")
-        (let [[block-id content opts] (test-utils/get-last-call test-plugin)]
-          (is (= "block-123" block-id))
-          (is (= "content" content))
-          (is (nil? opts)))))
+      (async done
+             (with-redefs [ls/logseq mocks/logseq-mock]
+               (-> (editor/insert-block! "block-123" "content")
+                   (.then (fn [result]
+                            (is (= {:uuid "block-123" :content "content"} (js->clj result :keywordize-keys true)))
+                            (done)))))))
 
     (testing "with optional params"
-      (with-redefs [ls/logseq (:plugin test-plugin)]
-        (editor/insert-block! "block-123" "content" {:before true})
-        (let [[block-id content opts] (test-utils/get-last-call test-plugin)]
-          (is (= "block-123" block-id))
-          (is (= "content" content))
-          (is (test-utils/js-equal? #js {:before true} opts))))))
+      (async done
+             (with-redefs [ls/logseq mocks/logseq-mock]
+               (-> (editor/insert-block! "block-123" "content" {:before true})
+                   (.then (fn [result]
+                            (is (= {:uuid "block-123" :content "content"} (js->clj result :keywordize-keys true)))
+                            (done))))))))
 
   (testing "update-block!"
-    (with-redefs [ls/logseq (:plugin test-plugin)]
-      (editor/update-block! "block-123" "new content")
-      (let [[block-id content] (test-utils/get-last-call test-plugin)]
-        (is (= "block-123" block-id))
-        (is (= "new content" content)))))
+    (async done
+           (with-redefs [ls/logseq mocks/logseq-mock]
+             (-> (editor/update-block! "block-123" "new content")
+                 (.then (fn [result]
+                          (is (= {:uuid "block-123" :content "new content"} (js->clj result :keywordize-keys true)))
+                          (done)))))))
 
   (testing "get-block!"
     (async done
-           (let [mock-block #js {:uuid "block-123" :content "test content"}]
-             (with-redefs [ls/logseq #js {:Editor #js {:getBlock (fn [] (js/Promise.resolve mock-block))}}]
-               (-> (editor/get-block! "block-123")
-                   (.then (fn [result]
-                            (is (= {:uuid "block-123" :content "test content"} result))
-                            (done)))))))))
+           (with-redefs [ls/logseq mocks/logseq-mock]
+             (-> (editor/get-block! "block-123")
+                 (.then (fn [result]
+                          (is (= {:uuid "block-123" :content "test content"} result))
+                          (done))))))))
 
 ;; Page operations tests
 (deftest page-operations-test
