@@ -45,6 +45,7 @@ const Editor = {
     checkEditing: () => Promise.resolve(true),
     exitEditingMode: () => Promise.resolve(),
     restoreEditingCursor: () => Promise.resolve(),
+    getEditingBlockContent: () => Promise.resolve("test block content"),
     getEditingCursorPosition: () => Promise.resolve({ line: 1, ch: 10 }),
     getEditingContentSlateValue: () => Promise.resolve({ type: 'paragraph' }),
 
