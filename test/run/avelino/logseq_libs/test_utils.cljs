@@ -53,6 +53,7 @@
         app-obj (js-obj)
         plugin-obj (js-obj)
         editor-obj (js-obj)
+        ui-obj (js-obj)
         last-call (atom nil)]
 
     ;; Core methods
@@ -75,6 +76,27 @@
           (fn [ui]
             (reset! last-call [ui])
             (swap! calls conj [:provide-ui [(clj->js ui)]])))
+
+    ;; UI methods
+    (set! (.-showMsg ui-obj)
+          (fn [content status opts]
+            (reset! last-call [content status opts])
+            (swap! calls conj [:show-msg [content status opts]])))
+
+    (set! (.-closeMsg ui-obj)
+          (fn [key]
+            (reset! last-call [key])
+            (swap! calls conj [:close-msg [key]])))
+
+    (set! (.-queryElementRect ui-obj)
+          (fn [selector]
+            (reset! last-call [selector])
+            (swap! calls conj [:query-element-rect [selector]])))
+
+    (set! (.-checkSlotValid ui-obj)
+          (fn [slot]
+            (reset! last-call [slot])
+            (swap! calls conj [:check-slot-valid [slot]])))
 
     ;; Settings methods
     (set! (.-updateSettings plugin-obj)
@@ -114,9 +136,9 @@
             (swap! calls conj [:update-block [block-id content]])))
 
     (set! (.-deletePage editor-obj)
-          (fn [name]
-            (reset! last-call [name])
-            (swap! calls conj [:delete-page [name]])))
+          (fn [page-name]
+            (reset! last-call [page-name])
+            (swap! calls conj [:delete-page [page-name]])))
 
     (set! (.-renamePage editor-obj)
           (fn [old-name new-name]
@@ -173,9 +195,10 @@
     (set! (.-getUserConfigs app-obj)
           (fn [] (js/Promise.resolve #js {:preferredLanguage "en"})))
 
-    ;; Set App and Editor objects
+    ;; Set App, Editor, and UI objects
     (set! (.-App plugin-obj) app-obj)
     (set! (.-Editor plugin-obj) editor-obj)
+    (set! (.-UI plugin-obj) ui-obj)
 
     {:calls calls
      :last-call last-call
