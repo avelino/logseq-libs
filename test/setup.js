@@ -97,3 +97,35 @@ require.extensions['.js'].original = require.extensions['.js'];
 
 // Now we can safely require modules
 require('source-map-support').install();
+
+// Mock window object if needed
+if (typeof window === 'undefined') {
+    global.window = global;
+}
+
+// Mock document object
+global.document = {
+    createElement: () => ({
+        style: {},
+        classList: { add: () => { } },
+        parentNode: { removeChild: () => { } },
+        contentWindow: {},
+        addEventListener: () => { },
+        attachShadow: () => ({ innerHTML: '' })
+    }),
+    querySelector: () => null,
+    body: {
+        appendChild: () => { },
+        removeChild: () => { }
+    }
+};
+
+// Mock navigator
+global.navigator = { userAgent: 'node.js' };
+
+// Import and set up mocks
+const mocks = require('../out/cljs-runtime/run.avelino.logseq_libs.mocks');
+
+// Set up global objects
+global.LSPlugin = mocks.LSPlugin;
+global.logseq = mocks.logseq;
