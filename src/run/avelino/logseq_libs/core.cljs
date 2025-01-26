@@ -53,7 +53,7 @@
   "Register before unload handler"
   [callback]
   (-> logseq
-      (.beforeunload callback)))
+      (.beforeUnload callback)))
 
 ;; Settings Schema
 (defn use-settings-schema!
@@ -107,7 +107,7 @@
   (-> logseq
       .-App
       (.registerCommandPalette
-       (clj->js (update command :callback #(fn [e] (%)))))))
+       (clj->js command))))
 
 ;; Export functions for npm module
 (def exports

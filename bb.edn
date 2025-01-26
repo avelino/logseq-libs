@@ -24,7 +24,7 @@
   test {:doc "Run tests with coverage"
         :task (do
                 (run "npx shadow-cljs compile test")
-                (run "npx nyc --reporter=lcov --reporter=text node out/node-tests.js"))}
+                (run "npx nyc --reporter=lcov --reporter=text node test/test-main.js"))}
 
   build-jar {:doc "Build jar file"
              :task (shell "clojure -T:build jar")}

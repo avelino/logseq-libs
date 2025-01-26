@@ -1,12 +1,18 @@
 {:deps true
- :builds {:lib {:target :npm-module
-                :output-dir "dist"
-                :exports-var run.avelino.logseq-libs.core/exports}
-          :test {:target :node-test
-                 :output-dir "out"
-                 :output-to "out/node-tests.js"
-                 :autorun true
-                 :main run.avelino.logseq-libs.test-runner/main
-                 :compiler-options {:infer-externs :auto
-                                    :externs ["externs/logseq.ext.js"]}
-                 :node-config {:main "test/setup.js"}}}}
+ :nrepl {:port 8777}
+
+ :source-paths ["src" "test"]
+
+ :js-options
+ {:resolve {"@logseq/libs" {:target :file
+                            :file "test/__mocks__/@logseq/libs.js"}}}
+
+ :builds
+ {:lib {:target :npm-module
+        :output-dir "dist"
+        :exports-var run.avelino.logseq-libs.core/exports}
+  :test {:target :node-test
+         :output-dir "out"
+         :output-to "out/node-tests.js"
+         :autorun true
+         :main run.avelino.logseq-libs.test-runner/run}}}
