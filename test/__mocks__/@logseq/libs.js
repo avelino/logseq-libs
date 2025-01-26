@@ -65,6 +65,14 @@ const Editor = {
     onInputSelectionEnd: (callback) => callback
 };
 
+// Mock UI API
+const UI = {
+    showMsg: (content, status, opts) => Promise.resolve(),
+    closeMsg: (key) => Promise.resolve(),
+    queryElementRect: (selector) => Promise.resolve({ top: 0, left: 0, width: 100, height: 100 }),
+    checkSlotValid: (slot) => Promise.resolve(true)
+};
+
 // Mock logseq object
 const logseq = {
     ready: () => { },
@@ -76,6 +84,7 @@ const logseq = {
     beforeunload: () => { },
     useSettingsSchema: () => { },
     Editor,
+    UI,
     App: {
         registerCommandPalette: () => { },
         getUserConfigs: () => Promise.resolve({ preferredLanguage: 'en' })
