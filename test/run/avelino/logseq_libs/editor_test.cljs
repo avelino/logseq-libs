@@ -41,6 +41,28 @@
                             (is (= {:uuid "block-123" :content "content"} (js->clj result :keywordize-keys true)))
                             (done))))))))
 
+  (testing "insert-batch-block!"
+    (testing "with required params only"
+      (async done
+             (let [batch-blocks [{:content "block 1"} {:content "block 2"}]]
+               (with-redefs [ls/logseq #js {:Editor #js {:insertBatchBlock (fn [_ blocks _]
+                                                                             (js/Promise.resolve (clj->js blocks)))}}]
+                 (-> (editor/insert-batch-block! "block-123" batch-blocks)
+                     (.then (fn [result]
+                              (is (= batch-blocks result))
+                              (done))))))))
+
+    (testing "with optional params"
+      (async done
+             (let [batch-blocks [{:content "block 1"} {:content "block 2"}]
+                   opts {:before true}]
+               (with-redefs [ls/logseq #js {:Editor #js {:insertBatchBlock (fn [_ blocks options]
+                                                                             (js/Promise.resolve (clj->js {:blocks blocks :options options})))}}]
+                 (-> (editor/insert-batch-block! "block-123" batch-blocks opts)
+                     (.then (fn [result]
+                              (is (= {:blocks batch-blocks :options opts} result))
+                              (done)))))))))
+
   (testing "update-block!"
     (async done
            (with-redefs [ls/logseq mocks/logseq-mock]

@@ -30,6 +30,7 @@ const Editor = {
     // Block operations
     removeBlock: () => Promise.resolve(),
     insertBlock: () => Promise.resolve(),
+    insertBatchBlock: (blockId, blocks, opts) => Promise.resolve(blocks),
     updateBlock: () => Promise.resolve(),
     getBlock: () => Promise.resolve({ uuid: 'block-123', content: 'test content' }),
 

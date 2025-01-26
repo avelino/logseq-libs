@@ -21,6 +21,16 @@
        (j/call :insertBlock block-id content (clj->js opts))
        (.then #(js->clj % :keywordize-keys true)))))
 
+(defn insert-batch-block!
+  "Insert multiple blocks at once"
+  ([block-id batch-blocks]
+   (insert-batch-block! block-id batch-blocks nil))
+  ([block-id batch-blocks opts]
+   (-> ls/logseq
+       (j/get :Editor)
+       (j/call :insertBatchBlock block-id (clj->js batch-blocks) (clj->js opts))
+       (.then #(js->clj % :keywordize-keys true)))))
+
 (defn update-block!
   "Update block content"
   [block-id content]
