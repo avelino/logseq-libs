@@ -5,9 +5,36 @@
 (def LSPluginCore
   #js {:baseInfo (fn [] #js {:id "test-plugin"})})
 
+;; Mock Editor API
+(def Editor
+  #js {:removeBlock (fn [block-id] (js/Promise.resolve nil))
+       :insertBlock (fn [block-id content opts] (js/Promise.resolve nil))
+       :updateBlock (fn [block-id content] (js/Promise.resolve nil))
+       :getBlock (fn [block-id] (js/Promise.resolve #js {:uuid block-id :content "test content"}))
+       :getPage (fn [page-name] (js/Promise.resolve #js {:name page-name :properties #js {}}))
+       :createPage (fn [name props] (js/Promise.resolve #js {:name name :properties props}))
+       :deletePage (fn [name] (js/Promise.resolve nil))
+       :renamePage (fn [old-name new-name] (js/Promise.resolve nil))
+       :getAllPages (fn [] (js/Promise.resolve #js [#js {:name "page1"} #js {:name "page2"}]))
+       :getPagesTreeData (fn [] (js/Promise.resolve #js [{:name "root" :children #js []}]))
+       :checkEditing (fn [] (js/Promise.resolve true))
+       :exitEditingMode (fn [] (js/Promise.resolve nil))
+       :restoreEditingCursor (fn [] (js/Promise.resolve nil))
+       :getEditingCursorPosition (fn [] (js/Promise.resolve #js {:line 1 :ch 10}))
+       :getEditingContentSlateValue (fn [] (js/Promise.resolve #js {:type "paragraph"}))
+       :getCurrentPage (fn [] (js/Promise.resolve #js {:name "current-page"}))
+       :getCurrentBlock (fn [] (js/Promise.resolve #js {:uuid "current-block"}))
+       :getSelectedBlocks (fn [] (js/Promise.resolve #js [#js {:uuid "block1"} #js {:uuid "block2"}]))
+       :openInRightSidebar (fn [id] (js/Promise.resolve nil))
+       :scrollToBlockInPage (fn [page-name block-id opts] (js/Promise.resolve nil))
+       :editBlock (fn [block-id opts] (js/Promise.resolve nil))
+       :selectBlock (fn [block-id] (js/Promise.resolve nil))
+       :onInputSelectionEnd (fn [callback] callback)})
+
 ;; Mock @logseq/libs module
 (def logseq-libs-mock
-  #js {:LSPluginCore LSPluginCore})
+  #js {:LSPluginCore LSPluginCore
+       :Editor Editor})
 
 ;; Mock require for @logseq/libs
 (when (exists? js/jest)
@@ -18,10 +45,14 @@
         b-clj (js->clj b :keywordize-keys true)]
     (= (dissoc a-clj :callback) (dissoc b-clj :callback))))
 
+(defn was-called? [test-plugin]
+  (not (nil? @(:last-call test-plugin))))
+
 (defn create-test-plugin []
   (let [calls (atom [])
         app-obj (js-obj)
         plugin-obj (js-obj)
+        editor-obj (js-obj)
         last-call (atom nil)]
 
     ;; Core methods
@@ -66,6 +97,72 @@
             (reset! last-call [schema])
             (swap! calls conj [:use-settings-schema [(clj->js schema)]])))
 
+    ;; Editor methods
+    (set! (.-removeBlock editor-obj)
+          (fn [block-id]
+            (reset! last-call [block-id])
+            (swap! calls conj [:remove-block [block-id]])))
+
+    (set! (.-insertBlock editor-obj)
+          (fn [block-id content opts]
+            (reset! last-call [block-id content opts])
+            (swap! calls conj [:insert-block [block-id content opts]])))
+
+    (set! (.-updateBlock editor-obj)
+          (fn [block-id content]
+            (reset! last-call [block-id content])
+            (swap! calls conj [:update-block [block-id content]])))
+
+    (set! (.-deletePage editor-obj)
+          (fn [name]
+            (reset! last-call [name])
+            (swap! calls conj [:delete-page [name]])))
+
+    (set! (.-renamePage editor-obj)
+          (fn [old-name new-name]
+            (reset! last-call [old-name new-name])
+            (swap! calls conj [:rename-page [old-name new-name]])))
+
+    (set! (.-checkEditing editor-obj)
+          (fn []
+            (reset! last-call [])
+            (swap! calls conj [:check-editing []])))
+
+    (set! (.-exitEditingMode editor-obj)
+          (fn []
+            (reset! last-call [])
+            (swap! calls conj [:exit-editing-mode []])))
+
+    (set! (.-restoreEditingCursor editor-obj)
+          (fn []
+            (reset! last-call [])
+            (swap! calls conj [:restore-editing-cursor []])))
+
+    (set! (.-openInRightSidebar editor-obj)
+          (fn [id]
+            (reset! last-call [id])
+            (swap! calls conj [:open-in-right-sidebar [id]])))
+
+    (set! (.-scrollToBlockInPage editor-obj)
+          (fn [page-name block-id opts]
+            (reset! last-call [page-name block-id opts])
+            (swap! calls conj [:scroll-to-block-in-page [page-name block-id opts]])))
+
+    (set! (.-editBlock editor-obj)
+          (fn [block-id opts]
+            (reset! last-call [block-id opts])
+            (swap! calls conj [:edit-block [block-id opts]])))
+
+    (set! (.-selectBlock editor-obj)
+          (fn [block-id]
+            (reset! last-call [block-id])
+            (swap! calls conj [:select-block [block-id]])))
+
+    (set! (.-onInputSelectionEnd editor-obj)
+          (fn [callback]
+            (reset! last-call [callback])
+            (swap! calls conj [:on-input-selection-end [callback]])))
+
     ;; App methods
     (set! (.-registerCommandPalette app-obj)
           (fn [command]
@@ -76,8 +173,9 @@
     (set! (.-getUserConfigs app-obj)
           (fn [] (js/Promise.resolve #js {:preferredLanguage "en"})))
 
-    ;; Set App object
+    ;; Set App and Editor objects
     (set! (.-App plugin-obj) app-obj)
+    (set! (.-Editor plugin-obj) editor-obj)
 
     {:calls calls
      :last-call last-call
