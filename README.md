@@ -11,7 +11,7 @@ A ClojureScript wrapper for [`@logseq/libs`](https://logseq.github.io/plugins/),
 Add to your `deps.edn`:
 
 ```clojure
-{:deps {run.avelino/logseq-libs {:mvn/version "0.0.17.1"}}}
+{:deps {run.avelino/logseq-libs {:mvn/version "0.2.1.0"}}}
 ```
 
 The `@logseq/libs` npm package is included as a dependency and will be installed automatically.
@@ -57,6 +57,7 @@ For detailed API documentation of each module, see the [API Reference](#api-refe
 ## API Reference
 
 ### Core API
+
 Most commonly used functions for plugin development:
 
 ```clojure
@@ -75,6 +76,7 @@ Most commonly used functions for plugin development:
 ```
 
 ### Editor API
+
 Functions for working with blocks and pages:
 
 ```clojure
@@ -104,12 +106,14 @@ For the complete API reference, visit our [API Documentation](https://cljdoc.org
 ### Local Setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/avelino/logseq-libs.git
 cd logseq-libs
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
